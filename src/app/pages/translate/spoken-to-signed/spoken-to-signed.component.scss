@@ -1,0 +1,112 @@
+@use '@angular/material' as mat;
+@import '../../../../theme/variables';
+
+:host {
+  display: grid;
+  width: 100%;
+  grid-template-areas: 'spoken signwriting signed';
+  grid-template-columns: auto 100px 50%;
+
+  @media #{$mat-lt-sm} {
+    grid-template-areas: 'spoken signwriting' 'signed signed';
+    grid-template-columns: auto 100px;
+
+    .sign-language {
+      border-top: 1px solid map-get(mat.$light-theme-foreground-palette, divider);
+
+      @media (prefers-color-scheme: dark) {
+        border-top: 1px solid map-get(mat.$dark-theme-foreground-palette, divider);
+      }
+    }
+  }
+
+  > *:not(:last-child) {
+    border-inline-end: 1px solid map-get(mat.$light-theme-foreground-palette, divider);
+
+    @media (prefers-color-scheme: dark) {
+      border-inline-end: 1px solid map-get(mat.$dark-theme-foreground-palette, divider);
+    }
+  }
+}
+
+app-sign-writing {
+  @media #{$mat-lt-sm} {
+    border: none !important;
+    height: 195px;
+  }
+}
+
+.translation-text {
+  padding: 20px 24px;
+  color: map-get(mat.$light-theme-foreground-palette, text);
+  flex: 1;
+
+  @media (prefers-color-scheme: dark) {
+    color: map-get(mat.$dark-theme-foreground-palette, text);
+  }
+
+  #spoken-language-label {
+    display: none;
+  }
+
+  textarea {
+    background-color: transparent;
+    color: inherit;
+    border: none;
+    font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+    font-size: 24px;
+    line-height: 32px;
+    resize: none;
+    outline: none;
+    width: 100%;
+    height: calc(100% - 40px);
+  }
+
+  > div {
+    display: flex;
+  }
+
+  #char-count {
+    flex-grow: 1;
+    align-self: center;
+    text-align: end;
+    font-size: 12px;
+    line-height: 40px;
+  }
+}
+
+// Numbers should always be left-to-right
+::ng-deep html[dir='rtl'] #char-count {
+  direction: ltr;
+  text-align: start !important;
+}
+
+.sign-language {
+  grid-area: signed;
+  background-color: #f5f5f5;
+  position: relative;
+  aspect-ratio: 1;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: #202124;
+  }
+
+  #actions {
+    position: absolute;
+    margin: 14px;
+    bottom: 0;
+    right: 0;
+    text-align: end;
+    //width: calc(100% - 2 * 14px - 56px); // 56px for AR on mobile
+    width: calc(100% - 2 * 14px);
+
+    mat-spinner {
+      display: inline-block;
+      margin: 0 8px -8px;
+    }
+  }
+}
+
+video {
+  display: block;
+}
